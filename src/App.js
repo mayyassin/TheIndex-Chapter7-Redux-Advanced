@@ -7,6 +7,10 @@ import Sidebar from "./Sidebar";
 import Loading from "./Loading";
 import AuthorsList from "./AuthorsList";
 import AuthorDetail from "./AuthorDetail";
+import { Switch, Route, Redirect, withRouter } from "react-router-dom";
+import {connect} from "react-redux";
+
+withRouter(connect(mapStateToProps)(App));
 
 const instance = axios.create({
   baseURL: "https://the-index-api.herokuapp.com"
