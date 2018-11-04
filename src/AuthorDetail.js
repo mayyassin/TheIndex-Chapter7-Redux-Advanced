@@ -1,5 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
+import {connect} from "react-redux";
+import * as actionCreators from './store/actions/author';
 
 // Components
 import BookTable from "./BookTable";
@@ -10,13 +12,13 @@ const instance = axios.create({
 });
 
 class AuthorDetail extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      author: {},
-      loading: true
-    };
-  }
+  // constructor(props) {
+  //   super(props);
+  //   this.state = {
+  //     author: {},
+  //     loading: true
+  //   };
+  // }
 
   componentDidMount() {
     this.getAuthor();
@@ -30,19 +32,20 @@ class AuthorDetail extends Component {
 
   getAuthor() {
     const authorID = this.props.match.params.authorID;
-    this.setState({ loading: true });
-    instance
-      .get(`/api/authors/${authorID}`)
-      .then(res => res.data)
-      .then(author => this.setState({ author: author, loading: false }))
-      .catch(err => console.error(err));
+    this.props.fetchAuthor(authorID);
+    // this.setState({ loading: true });
+    // instance
+    //   .get(`/api/authors/${authorID}`)
+    //   .then(res => res.data)
+    //   .then(author => this.setState({ author: author, loading: false }))
+    //   .catch(err => console.error(err));
   }
 
   render() {
-    if (this.state.loading) {
+    if (this.props.loading) {
       return <Loading />;
     } else {
-      const author = this.state.author;
+      const author = this.props.authdetail;
       return (
         <div className="author">
           <div>
@@ -60,4 +63,18 @@ class AuthorDetail extends Component {
   }
 }
 
-export default AuthorDetail;
+const mapStateToProps = state => {
+  return {
+      authdetail: state.rootAuthor.author,
+      loading: state.rootAuthor.loading,
+  }
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchAuthor: (authorID) => dispatch(actionCreators.fetchAuthorDetail(authorID)),
+  };
+}
+
+
+export default connect(mapStateToProps,mapDispatchToProps)(AuthorDetail);

@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 
+import {connect} from "react-redux";
+import * as actionCreators from './store/actions/authors';
+
 class SearchBar extends Component {
   constructor(props) {
     super(props);
@@ -10,9 +13,14 @@ class SearchBar extends Component {
     this.handleChange = this.handleChange.bind(this);
   }
 
+
+
+
+
   handleChange(event) {
-    this.setState({ query: event.target.value });
-    this.props.changeHandler(event.target.value);
+    // this.setState({ query: event.target.value });
+    // this.props.changeHandler(event.target.value);
+    this.props.filterAuthors(event.target.value);
   }
 
   render() {
@@ -36,4 +44,10 @@ class SearchBar extends Component {
   }
 }
 
-export default SearchBar;
+const mapDispatchToProps = dispatch => {
+  return {
+    filterAuthors: (query) => dispatch(actionCreators.filterAuthors(query)),
+  };
+}
+
+export default connect(null, mapDispatchToProps)(SearchBar);
