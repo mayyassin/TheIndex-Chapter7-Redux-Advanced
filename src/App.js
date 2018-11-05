@@ -81,7 +81,7 @@ const mapStateToProps = state => {
   return {
      auths: state.rootAuthors.authors,
      loading: state.rootAuthors.loading,
-     authsfilter: state.rootAuthor.filterAuthors
+     authsfilter: state.rootAuthors.filterAuthors
   }
 };
 
